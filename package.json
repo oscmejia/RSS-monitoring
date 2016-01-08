@@ -1,0 +1,26 @@
+{
+  "name": "RSS-monitoring",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gl.vovsolutions.com:oscmejia/RSS-monitoring.git"
+  },
+  "keywords": [
+    "RSS",
+    "Monitoring",
+    "Notifier"
+  ],
+  "author": "Oscar Mejia",
+  "license": "ISC",
+  "dependencies": {
+    "feedparser": "^1.1.4",
+    "moment": "^2.11.0",
+    "node-notifier": "^4.4.0",
+    "request": "^2.67.0"
+  }
+}
