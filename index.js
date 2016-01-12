@@ -1,36 +1,33 @@
 // Load Modules
-var fs = require('fs');
 var FeedParser = require('feedparser');
 var request = require('request');
 var moment = require('moment');
 var winston = require('winston');
-var logger = require('log-colors');
+logger = require('log-colors');
 
 // Load Clases
 var notifierUtil = require('./NotifierUtil').create();
-
+var feedUrlsParser = require('./FeedUrlsParser').create();
 
 // State Variables
-var urls = []
+var feedsList = []
 var path = __dirname;
-var feedsFile = path + '/feeds';
+var feedsFilePath = path + '/feeds';
 
 
 // Read and Load Feeds file
-if (fs.existsSync(feedsFile)) {
-  try {
-    var feedsContent = JSON.parse(fs.readFileSync(feedsFile, 'utf8'));
+feedUrlsParser.parse(feedsFilePath, function(feeds) {
+  feedsList = feeds;
 
-    logger.info("Feed Content", feedsContent);
+  for (var idx in feedsList) {
+    var feed = feedsList[idx]
+    logger.debug("feed (r)", feed.name);
+    logger.debug("feed (r)", feed.url);
+
   }
-  catch (e) {
-    logger.error("Can not parse feeds file: " + feedsFile);
-    logger.error(e);
-  }
-}
-else {
-  logger.error("Can not read feeds file: " + feedsFile);
-}
+
+});
+
 logger.info('end');
 return;
 

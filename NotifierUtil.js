@@ -6,7 +6,6 @@ var notifier = require('node-notifier');
 var path = require('path');
 
 
-
 NotifierUtil.prototype.notify = function(title, msg, icon, cb) {
 
   if (icon == '') icon = 'icon.png';
@@ -20,9 +19,9 @@ NotifierUtil.prototype.notify = function(title, msg, icon, cb) {
     contentImage: void 0
   }, function(err, response) {
     if (err)
-      console.log(error, err);
+      logger.error(error, err);
     else
-      console.log("Closed by user!");
+      logger.info("Closed by user!");
 
     // Call the callback if defined.
     if (cb)
