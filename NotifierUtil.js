@@ -8,11 +8,11 @@ var path = require('path');
 
 NotifierUtil.prototype.notify = function(title, msg, icon, cb) {
 
-  if (icon == '') icon = 'icon.png';
+  if (icon == undefined || icon == "") icon = 'icon.png';
 
   notifier.notify({
-    'title': title,
-    'message': msg,
+    "title": title,
+    "message": msg,
     icon: path.join(__dirname, icon),
     sound: "Blow",
     wait: true,

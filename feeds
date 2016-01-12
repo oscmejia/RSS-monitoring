@@ -4,6 +4,6 @@
     "url": "https://www.upwork.com/jobs/atom?category2=web_mobile_software_dev&subcategory2=mobile_development&budget=1000-100000&contractor_tier=2%2C3&duration=month%2Cquarter%2Csemester%2Congoing%2Cnone&sort=create_time+desc&api_params=1&q="
   }, {
     "name": "Name2",
-    "url": "https://www.upwork.com/o/jobs/browse/c/web-mobile-software-dev/?amount=1000,100000&contractor_tier=2,3&duration=weeks,months,ongoing,none&q=(ror%20OR%20rails%20OR%20ruby-on-rails%20OR%20rubyonrails%20OR%20ruby%20on%20rails)&sort=create_time%2Bdesc"
+    "url": "https://www.upwork.com/jobs/atom?category2=web_mobile_software_dev&budget=1000-100000&contractor_tier=2%2C3&duration=month%2Cquarter%2Csemester%2Congoing%2Cnone&q=%28ror+OR+rails+OR+ruby-on-rails+OR+rubyonrails+OR+ruby+AND+on+AND+rails%29&sort=create_time+desc&api_params=1"
   }]
 }
