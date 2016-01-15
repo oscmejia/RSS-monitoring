@@ -37,7 +37,7 @@ function startCheckForNewFeeds() {
   currentIdx = 0;
 
   if (isRunning)
-    logger.warn("startCheckForNewFeeds canceled becasue isRunning=true");
+    logger.warn("startCheckForNewFeeds canceled becasue isRunning==true");
   else
     checkForNewFeeds();
 }
@@ -103,16 +103,12 @@ function checkForNewFeeds() {
       processFeed(item);
     }
 
-
   });
 
   feedparser.on('end', function() {
-
     logger.info("-------------------------- read EVENT END --------------------------");
-
     currentIdx++;
     checkForNewFeeds();
-
   });
 }
 
