@@ -19,7 +19,7 @@ NotifierUtil.prototype.notify = function(title, msg, icon, cb) {
     contentImage: void 0
   }, function(err, response) {
     if (err)
-      logger.error(error, err);
+      logger.error("error", err);
     else
       logger.info("Closed by user!");
 

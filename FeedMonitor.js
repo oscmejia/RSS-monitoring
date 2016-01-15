@@ -1,11 +1,8 @@
-// Constructor
-var FeedMonitor = function() {}
-
-
 var FeedParser = require('feedparser');
 var request = require('request');
 var moment = require('moment');
 var cronJob = require('cron').CronJob;
+var storage = require('node-persist');
 
 var notifierUtil = require('./NotifierUtil').create();
 
@@ -13,6 +10,13 @@ var started = false;
 var isRunning = false;
 var feeds = [];
 var currentIdx = 0;
+
+// Constructor
+var FeedMonitor = function() {
+  logger.info("Constructor");
+  storage.initSync();
+}
+
 
 // Start Monitor
 FeedMonitor.prototype.start = function(_feeds) {
@@ -29,6 +33,7 @@ FeedMonitor.prototype.start = function(_feeds) {
 
 function startCheckForNewFeeds() {
   logger.info('Cron time!');
+  logger.info("Storage size: " + storage.length());
   currentIdx = 0;
 
   if (isRunning)
@@ -54,6 +59,7 @@ function checkForNewFeeds() {
 
 
   // Make the request to the feed URL
+  logger.info(" ");
   logger.info("==================================================== MAKE REQUEST: " + feed.url);
   var req = request(feed.url);
   var feedparser = new FeedParser([]);
@@ -62,7 +68,7 @@ function checkForNewFeeds() {
     var self = this;
     logger.error("Error making request to feed URL");
     logger.error(error);
-    logger.info("-------------------------- REQ error --------------------------");
+
     currentIdx++;
     checkForNewFeeds();
   });
@@ -81,16 +87,9 @@ function checkForNewFeeds() {
 
 
   feedparser.on('error', function(error) {
-    var self = this;
-
-    logger.error("Error reading RSS Feed");
-    logger.error(error);
-    notifierUtil.notify("Error reading RSS Feed", error);
-
+    logger.error("Error reading RSS Feed", error);
+    //notifierUtil.notify("Error reading RSS Feed", error);
     logger.info("-------------------------- error ENDED --------------------------");
-
-    currentIdx++;
-    checkForNewFeeds();
   });
 
   feedparser.on('readable', function() {
@@ -101,11 +100,9 @@ function checkForNewFeeds() {
     while (item = self.read()) {
       var m = moment(Date.parse(item.date));
       logger.info("Feed found: " + item.title, item.date, m.fromNow());
+      processFeed(item);
     }
-    logger.info("-------------------------- read ENDED --------------------------");
 
-    //currentIdx++;
-    //checkForNewFeeds();
 
   });
 
@@ -117,6 +114,38 @@ function checkForNewFeeds() {
     checkForNewFeeds();
 
   });
+}
+
+function processFeed(item) {
+  var timeStamp = Date.parse(item.date).getTime();
+  var id = (item.guid + String(timeStamp)).replace(/[^a-zA-Z ]/g, "");
+
+  var foundNewFeed = false;
+  storage.forEach(function(key, value) {
+    logger.info("Foreach: " + key + " vs " + id);
+    if (id == key) {
+      logger.info("match: " + key);
+      logger.info("match: " + id);
+      foundNewFeed = true;
+    }
+  });
+
+  logger.info("Foreach: DONE. New feed found: " + foundNewFeed);
+  if (foundNewFeed) {
+    // Show notification for new feed found
+    notifierUtil.notify(item.title, "New Feed");
+    //logger.info(":::", item)
+  }
+  else {
+    // Store feed, so we can compare later.
+    storage.setItem(id, "0", function(error) {
+      if (error)
+        logger.error("Error storing item", error);
+      else
+        logger.info("Item stored: " + id);
+    });
+  }
+
 }
 
 module.exports.create = function() {

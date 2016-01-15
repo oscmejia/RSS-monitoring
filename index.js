@@ -1,5 +1,4 @@
 // Load Modules
-
 var winston = require('winston');
 logger = require('log-colors');
 
@@ -21,11 +20,9 @@ feedUrlsParser.parse(feedsFilePath, function(feeds) {
   for (var idx in feedsList) {
     var feed = feedsList[idx]
     logger.debug("feed (r)", feed.name, feed.url);
-
   }
 
+  notifierUtil.notify("Starting RSS Monitoring", "Good Luck!");
   feedMonitor.start(feedsList);
 
 });
-
-notifierUtil.notify("Starting RSS Monitoring", "Good Luck!");
