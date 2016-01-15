@@ -20,8 +20,7 @@ feedUrlsParser.parse(feedsFilePath, function(feeds) {
 
   for (var idx in feedsList) {
     var feed = feedsList[idx]
-    logger.debug("feed (r)", feed.name);
-    logger.debug("feed (r)", feed.url);
+    logger.debug("feed (r)", feed.name, feed.url);
 
   }
 
