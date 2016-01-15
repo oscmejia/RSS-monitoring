@@ -40,14 +40,16 @@ function startCheckForNewFeeds() {
 function checkForNewFeeds() {
   var self = this;
 
-  if (currentIdx == (feeds.length - 1)) {
+  logger.debug("checkForNewFeeds  check: " + currentIdx + " == " + feeds.length);
+  if (currentIdx == feeds.length) {
     logger.debug("checkForNewFeeds: END!: " + currentIdx + " == " + feeds.length);
     isRunning = false;
     return;
   }
 
   var feed = feeds[currentIdx];
-  logger.debug("checkForNewFeeds: " + feed.name + " for currentIdx: " + currentIdx);
+  logger.debug("checkForNewFeeds  currentIdx: " + currentIdx);
+  logger.debug("checkForNewFeeds: " + feed.name);
   isRunning = true;
 
 
@@ -101,6 +103,15 @@ function checkForNewFeeds() {
       logger.info("Feed found: " + item.title, item.date, m.fromNow());
     }
     logger.info("-------------------------- read ENDED --------------------------");
+
+    //currentIdx++;
+    //checkForNewFeeds();
+
+  });
+
+  feedparser.on('end', function() {
+
+    logger.info("-------------------------- read EVENT END --------------------------");
 
     currentIdx++;
     checkForNewFeeds();
